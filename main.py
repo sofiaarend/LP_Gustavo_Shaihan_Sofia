@@ -2,6 +2,7 @@ import sys
 from analysis_utils import *
 
 from grammar_utils import *
+from sentence_utils import recognize_sentence
 
 def get_grammar():
   lines = []
@@ -29,6 +30,22 @@ def main():
   print('--- TABELA DE ANALISE PREDITIVA ---\n')
   for line in parsing_table:
     print(f"{line}\n")
+
+  while True:
+    print('Insira a sentenca abaixo, seguido de enter. Insira x para encerrar o programa\n')
+    sentence = input()
+    if sentence =='x':
+      sys.exit()
+
+    response = recognize_sentence(sentence, grammar, parsing_table)
+    print('--- TABELA DE ANALISE DA SENTENCA ---\n')
+    if response['success']:
+      print('Sentenca válida!!!\n')
+    else: 
+      print('Sentenca inválida :(\n')
+
+    for row in response['table']:
+      print(f"Pilha: {row['s']}; Entrada: {row['i']}; Saída: {row['o']}\n")
 
 
 if (__name__ == "__main__"):
