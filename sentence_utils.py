@@ -26,15 +26,12 @@ def recognize_sentence(input, grammar, parsing_table):
       
       if is_non_terminal(last):
         col_char = parsing_table[0].index(char)
-        print(col_char)
         aux = []
         for row in parsing_table:
           if last == row[0]:
             aux = row
 
-        print(aux)
         prod = aux[col_char]
-        print(prod)
 
         item = aux[col_char].split('->')[1]
         stack.pop(-1)

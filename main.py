@@ -32,21 +32,21 @@ def main():
   print('\n--- TABELA DE ANALISE PREDITIVA ---\n')
   parsing_table = get_parsing_table(grammar, first_table, follow_table)
 
-  # while True:
-  #   print('Insira a sentenca abaixo, seguido de enter. Insira x para encerrar o programa\n')
-  #   sentence = input()
-  #   if sentence =='x':
-  #     sys.exit()
+  while True:
+    print('Insira a sentenca abaixo, seguido de enter. Insira x para encerrar o programa\n')
+    sentence = input()
+    if sentence =='x':
+      sys.exit()
 
-  #   response = recognize_sentence(sentence, grammar, parsing_table)
-  #   print('--- TABELA DE ANALISE DA SENTENCA ---\n')
-  #   if response['success']:
-  #     print('Sentenca válida!!!\n')
-  #   else: 
-  #     print('Sentenca inválida :(\n')
+    response = recognize_sentence(sentence, grammar, parsing_table)
+    print('--- TABELA DE ANALISE DA SENTENCA ---\n')
+    if response['success']:
+      print('Sentenca válida!!!\n')
+    else: 
+      print('Sentenca inválida :(\n')
 
-  #   for row in response['table']:
-  #     print(f"Pilha: {row['s']}; Entrada: {row['i']}; Saída: {row['o']}\n")
+    for row in response['table']:
+      print(f"Pilha: {row['s']}; Entrada: {row['i']}; Saída: {row['o']}\n")
 
 
 if (__name__ == "__main__"):

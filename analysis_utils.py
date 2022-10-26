@@ -36,4 +36,5 @@ def get_parsing_table(grammar, first_table, follow_table):
   for row in parsing_table[1:]:
     table.add_row(row)
   print(table)
+  return parsing_table
 
