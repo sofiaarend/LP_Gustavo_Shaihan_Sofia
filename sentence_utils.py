@@ -1,3 +1,6 @@
+from grammar_utils import is_non_terminal
+
+
 def recognize_sentence(input, grammar, parsing_table):
   sentence = list(input)
   sentence.append('$')
@@ -12,32 +15,31 @@ def recognize_sentence(input, grammar, parsing_table):
   while len(stack) > 0 and len(sentence) > 0:
     last = stack[-1]
 
-    if last == sentence[0]:
+    char = sentence[0]
+    if last == char:
       sentence.remove(0)
       stack.pop(-1)
       output = ''
     else:
-      aux = []
-      for row in parsing_table:
-        if last == row[0]:
-          aux = row
-
-      if len(aux) == 0:
-        break
-
-      char_exists = 0
-      for item in aux:
-        if sentence[0] in item:
-          char_exists = aux.index(item)
-          break
-      if char_exists == 0:
+      if char not in parsing_table[0][1:]:
         break
       
-      aux = aux[char_exists].split('->')[1]
-      stack.pop(-1)
-      stack.append(aux[::-1])
+      if is_non_terminal(last):
+        col_char = parsing_table[0].index(char)
+        print(col_char)
+        aux = []
+        for row in parsing_table:
+          if last == row[0]:
+            aux = row
 
-      output = last + '->' + aux
+        print(aux)
+        prod = aux[col_char]
+        print(prod)
+
+        item = aux[col_char].split('->')[1]
+        stack.pop(-1)
+        stack.append(item[::-1])      
+        output = last + '->' + aux
     
     if not len(stack) == 0 and not len(sentence) == 0:
       aux_sentence = sentence.copy()

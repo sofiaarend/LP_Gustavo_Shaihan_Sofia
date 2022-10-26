@@ -1,5 +1,6 @@
 import sys
 from analysis_utils import *
+from follow import FollowTable
 
 from grammar_utils import *
 from sentence_utils import recognize_sentence
@@ -20,32 +21,32 @@ def main():
   
   grammar = pairs_to_object(extract_pairs(get_grammar()))
 
-  print(f"\nGramática: {grammar}\n")
-  firsts = get_all_firsts(grammar)
-  print(f"Firsts: {firsts}\n")
-  follow = get_all_follows(grammar)
-  print(f"Follow: {follow}\n")
+  first_table = FirstTable()
+  get_all_firsts(grammar, first_table)
+  first_table.print_table()
+  
+  follow_table = FollowTable()
+  get_all_follows(grammar, follow_table)
+  follow_table.print_table()
 
-  parsing_table = get_parsing_table(grammar)
-  print('--- TABELA DE ANALISE PREDITIVA ---\n')
-  for line in parsing_table:
-    print(f"{line}\n")
+  print('\n--- TABELA DE ANALISE PREDITIVA ---\n')
+  parsing_table = get_parsing_table(grammar, first_table, follow_table)
 
-  while True:
-    print('Insira a sentenca abaixo, seguido de enter. Insira x para encerrar o programa\n')
-    sentence = input()
-    if sentence =='x':
-      sys.exit()
+  # while True:
+  #   print('Insira a sentenca abaixo, seguido de enter. Insira x para encerrar o programa\n')
+  #   sentence = input()
+  #   if sentence =='x':
+  #     sys.exit()
 
-    response = recognize_sentence(sentence, grammar, parsing_table)
-    print('--- TABELA DE ANALISE DA SENTENCA ---\n')
-    if response['success']:
-      print('Sentenca válida!!!\n')
-    else: 
-      print('Sentenca inválida :(\n')
+  #   response = recognize_sentence(sentence, grammar, parsing_table)
+  #   print('--- TABELA DE ANALISE DA SENTENCA ---\n')
+  #   if response['success']:
+  #     print('Sentenca válida!!!\n')
+  #   else: 
+  #     print('Sentenca inválida :(\n')
 
-    for row in response['table']:
-      print(f"Pilha: {row['s']}; Entrada: {row['i']}; Saída: {row['o']}\n")
+  #   for row in response['table']:
+  #     print(f"Pilha: {row['s']}; Entrada: {row['i']}; Saída: {row['o']}\n")
 
 
 if (__name__ == "__main__"):
