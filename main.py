@@ -1,9 +1,10 @@
 import sys
-from analysis_utils import *
+from analysis_utils import get_parsing_table
+from first import FirstTable
 from follow import FollowTable
-
-from grammar_utils import *
+from grammar_utils import extract_pairs, get_all_firsts, get_all_follows, pairs_to_object
 from sentence_utils import recognize_sentence
+from prettytable import PrettyTable
 
 def get_grammar():
   lines = []
@@ -20,7 +21,8 @@ def main():
   print('Insira a gramática abaixo, uma regra por linha.\nPara finalizar insira "x" em uma nova linha.\n')
   
   grammar = pairs_to_object(extract_pairs(get_grammar()))
-
+  print('\n')
+  
   first_table = FirstTable()
   get_all_firsts(grammar, first_table)
   first_table.print_table()
@@ -33,7 +35,7 @@ def main():
   parsing_table = get_parsing_table(grammar, first_table, follow_table)
 
   while True:
-    print('Insira a sentenca abaixo, seguido de enter. Insira x para encerrar o programa\n')
+    print('\nInsira a sentenca abaixo, seguido de enter. Insira x para encerrar o programa\n')
     sentence = input()
     if sentence =='x':
       sys.exit()
@@ -45,9 +47,10 @@ def main():
     else: 
       print('Sentenca inválida :(\n')
 
+    table = PrettyTable(['Pilha', 'Entrada', 'Producao'])
     for row in response['table']:
-      print(f"Pilha: {row['s']}; Entrada: {row['i']}; Saída: {row['o']}\n")
-
+      table.add_row([row['s'], row['i'], row['o']])
+    print(table)
 
 if (__name__ == "__main__"):
     main()
